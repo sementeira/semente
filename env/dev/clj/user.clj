@@ -7,6 +7,7 @@
    [semente.auth :as auth]
    [semente.config :refer [env]]
    [semente.core :refer [start-app]]
+   semente.handler
    [semente.db.core :as db]
    [semente.garden.core]))
 
@@ -33,6 +34,15 @@
 
 (defn create-user [username password]
   (db/create-user db/crux username (auth/hash-password password)))
+
+(def ^:private app
+  (memoize
+   (fn []
+     (start-app [])
+     (semente.handler/app))))
+
+(defn handle-ring-req [req]
+  ((app) req))
 
 (comment
   (start-app [])

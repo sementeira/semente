@@ -66,6 +66,9 @@
   :shadow-cljs
   {:nrepl {:port 7002
            :middleware [refactor-nrepl.middleware/wrap-refactor]}
+   :jvm-opts ["-Dconf=dev-config.edn" "-Xms256m" "Xmx512m"]
+   :dev-http {8000 {:roots ["classpath:resources/public" "../semente-resources"]
+                    :handler user/handle-ring-req}}
    :builds
    {:app
     {:target :browser
@@ -108,7 +111,7 @@
    :dev           [:project/dev :profiles/dev]
    :test          [:project/dev :project/test :profiles/test]
 
-   :project/dev  {:jvm-opts ["-Dconf=dev-config.edn"]
+   :project/dev  {:jvm-opts ["-Dconf=dev-config.edn" "-Xms256m" "-Xmx512m"]
                   :dependencies [[binaryage/devtools "0.9.10"]
                                  [cider/piggieback "0.4.1"]
                                  [garden "1.3.9"]
@@ -125,7 +128,7 @@
                   :repl-options {:init-ns user}
                   :injections [(require 'pjstadig.humane-test-output)
                                (pjstadig.humane-test-output/activate!)]}
-   :project/test {:jvm-opts ["-Dconf=test-config.edn"]
+   :project/test {:jvm-opts ["-Dconf=test-config.edn" "-Xms256m" "-Xmx512m"]
                   :resource-paths ["env/test/resources"]}
    :profiles/dev {}
    :profiles/test {}})
